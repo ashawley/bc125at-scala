@@ -35,6 +35,6 @@ case class StoredChannel(
 object StoredChannel {
 
   // Alternate case class constructor
-  def apply(channel: Channel, index: Int, `ctcss/dcs`: Boolean = false, delay: Int = 0, lockedOut: Boolean = false, primary: Boolean = false) =
+  def apply(channel: Channel, index: Int, `ctcss/dcs`: Boolean = false, delay: Int = 2, lockedOut: Boolean = false, primary: Boolean = false) =
     new StoredChannel(index, channel.title, channel.frequency, channel.mode, `ctcss/dcs`, delay, lockedOut, primary)
 }
