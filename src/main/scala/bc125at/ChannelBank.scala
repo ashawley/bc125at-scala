@@ -22,7 +22,8 @@ case class ChannelBank(
   def lostChannels = channelsIn.drop(limit)
 
   def storableChannels(offset: Int) = channelsOut.zipWithIndex.map {
-    case (c, i) => StoredChannel(c, i + offset)
+    case (c, i) if (i >= size) => StoredChannel(c, i + offset + 1, lockedOut = true)
+    case (c, i) => StoredChannel(c, i + offset + 1)
   }
 
   def writeFrom(offset: Int): Seq[String] =
