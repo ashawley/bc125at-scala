@@ -2,6 +2,42 @@ package bc125at
 
 object Main extends App {
 
+  val deleteKeys = List("Deprecated")
+
+  val services = Seq(
+    "Police",
+    "Fire/Emergency",
+    "Ham",
+    "Marine",
+    "Railroad",
+    "Civil Air",
+    "Military Air",
+    "CB radio",
+    "FRS/GMRS/MURS",
+    "Racing")
+
+  def reMap = Map(
+    "Deprecated" -> "Deprecated",
+    "EMS-Talk" -> "Fire/Emergency",
+    "Public Works" -> "FRS/GMRS/MURS",
+    "Law Talk" -> "Police",
+    "Hospital" -> "Fire/Emergency",
+    "Fire Dispatch" -> "Fire/Emergency",
+    "Emergency Ops" -> "Fire/Emergency",
+    "Law Tac" -> "Police",
+    "Fire-Talk" -> "Fire/Emergency",
+    "Ham" -> "Ham",
+    "Business" -> "FRS/GMRS/MURS",
+    "Multi-Dispatch" -> "Fire/Emergency",
+    "Law Dispatch" -> "Police",
+    "Aircraft" -> "Civil Air",
+    "Fire-Tac" -> "Fire/Emergency",
+    "Security" -> "FRS/GMRS/MURS",
+    "EMS Dispatch" -> "Fire/Emergency"
+  )
+
+  val serviceToBank = services.zipWithIndex.toMap
+
   if (args.isEmpty) {
     println("Empty input file")
   } else {
@@ -16,41 +52,7 @@ object Main extends App {
       new java.io.PrintWriter(stdOut)
     }
 
-    val deleteKeys = List("Deprecated")
-
-    val services = Seq(
-      "Police",
-      "Fire/Emergency",
-      "Ham",
-      "Marine",
-      "Railroad",
-      "Civil Air",
-      "Military Air",
-      "CB radio",
-      "FRS/GMRS/MURS",
-      "Racing")
-
-    def reMap = Map(
-      "Deprecated" -> "Deprecated",
-      "EMS-Talk" -> "Fire/Emergency",
-      "Public Works" -> "FRS/GMRS/MURS",
-      "Law Talk" -> "Police",
-      "Hospital" -> "Fire/Emergency",
-      "Fire Dispatch" -> "Fire/Emergency",
-      "Emergency Ops" -> "Fire/Emergency",
-      "Law Tac" -> "Police",
-      "Fire-Talk" -> "Fire/Emergency",
-      "Ham" -> "Ham",
-      "Business" -> "FRS/GMRS/MURS",
-      "Multi-Dispatch" -> "Fire/Emergency",
-      "Law Dispatch" -> "Police",
-      "Aircraft" -> "Civil Air",
-      "Fire-Tac" -> "Fire/Emergency",
-      "Security" -> "FRS/GMRS/MURS",
-      "EMS Dispatch" -> "Fire/Emergency"
-    )
-
-    val serviceToBank = services.zipWithIndex.toMap
+    println("Reading in records...")
 
     val reportLines = readLines(inFile).toIterable
 
@@ -90,8 +92,16 @@ object Main extends App {
           50)
       }
 
-      val bank = ChannelStorage(channelBanks, 10, 50)
-      writer.println(bank)
+      val storage = ChannelStorage(channelBanks, 10, 50)
+
+      println(s"Writing out ${channelBanks.size} channels")
+
+      storage.banks.foreach {
+        case (k, v) => println(s"Channel $k: ${v.size} frequencies")
+      }
+
+      writer.println(storage)
+      writer.close
     }
   }
 
