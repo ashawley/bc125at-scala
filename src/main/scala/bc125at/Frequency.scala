@@ -16,7 +16,7 @@ object FrequencyMode {
   case object AM extends Mode
   case object FM extends Mode
   case object NFM extends Mode
-  case object Auto extends Mode
+  case object Auto extends Mode { override val toString = "AUTO" }
   def apply(s: String) = s match {
     case "AM" => AM
     case "FM" => FM
