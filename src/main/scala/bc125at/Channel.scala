@@ -1,6 +1,6 @@
 package bc125at
 
-object EmptyChannel extends Channel(Frequency("0.0"), "", FrequencyMode.Auto)
+object EmptyChannel extends Channel(Frequency("0.000"), "", FrequencyMode.Auto)
 
 case class Channel(
   // number: Int,
